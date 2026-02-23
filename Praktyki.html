@@ -3,11 +3,205 @@
 <head>
     <meta charset="UTF-8">
     <title>Praktyki</title>
-    <script>
+<script>
+    function generujKod() {
+        const pola = document.getElementsByTagName("input"); //AI
+        let nazwisko = pola[0].value.toUpperCase(); //AI
+        let imie = pola[2].value.toUpperCase(); //AI
+        let p1 = nazwisko[0] || ""; // pierwsza litera nazwiska
+        let p2 = "";               // tu Twoja pętla włoży samogłoskę
+        let p4 = imie[0] || "";   // pierwsza litera imienia
+        if (!nazwisko) return alert("Zapisz nazwisko!");
+        if (!imie) return alert("Zapisz imie!");
         
-    </script>
+//NAZWISKO//
+        for (let i = 1; i < nazwisko.length; i++) {
+            const samogloski = "AEIOUY";
+            if (samogloski.includes(nazwisko[i])) {
+                p2 = nazwisko[i]; //zmieniłem z "znalezionaSamogloska" na p2 :)
+                break;
+            }
+        }
+//DRUGIE NAZWISKO//
+        let drugieNazwisko = pola[1].value.toUpperCase();
+        let p3 = "";
+        if (drugieNazwisko) { // jeśli drugieNazwisko NIE jest puste
+            p3 = drugieNazwisko[0]; // weź pierwszą literę
+        } else {
+            p3 = "X"; // w przeciwnym razie wpisz X
+        }
+
+//AI NAPISALO COS O SPOLGLOSKACH ITP//
+        let p8 = ""; // tu wpadnie spółgłoska nazwiska
+        for (let i = 1; i < nazwisko.length; i++) {
+            const samogloski = "AEIOUY";
+            if (!samogloski.includes(nazwisko[i])) { 
+                p8 = nazwisko[i];
+                break;
+            }
+        }
+        let p9 = ""; // spółgłoska drugiego nazwiska
+        for (let i = 1; i < drugieNazwisko.length; i++) {
+            const samogloski = "AEIOUY";
+            if (!samogloski.includes(drugieNazwisko[i])) { 
+                p9 = drugieNazwisko[i];
+                break;
+            }
+        }
+        let p10 = ""; // spółgłoska imienia
+        for (let i = 1; i < imie.length; i++) {
+            const samogloski = "AEIOUY";
+            if (!samogloski.includes(imie[i])) { 
+                p10 = imie[i];
+                break;
+            }
+        }
+//DATA OD AI//
+        let dataZInputa = pola[4].value; // Pobieramy tekst np. "2024-05-23"
+        if (!dataZInputa) return alert("Wybierz datę!");
+
+        let obiektDaty = new Date(dataZInputa); // Zamieniamy tekst na "inteligentną" datę
+
+        let rokPelny = obiektDaty.getFullYear(); // Pobiera pełne 2024
+        let miesiacLiczba = obiektDaty.getMonth() + 1; // JS liczy miesiące od 0, więc dodajemy 1
+        let dzienLiczba = obiektDaty.getDate();
+
+        // Przygotowanie do kodu (zamiana na tekst i dodanie zera, jeśli miesiąc < 10)
+        let rokDoKodu = rokPelny.toString().substring(2, 4); // Wycinamy końcówkę "24"
+        let miesiacDoKodu = miesiacLiczba.toString().padStart(2, "0"); // padStart dodaje zero na początku
+        let dzienDoKodu = dzienLiczba.toString().padStart(2, "0");
+
+        let dataSklejona = rokDoKodu + miesiacDoKodu + dzienDoKodu;
+//17//
+        let p11 = ""; 
+        if (rokPelny >= 2000) { 
+            p11 = "A";
+        } else {
+            p11 = "0"
+        }
+//PŁEĆ//
+        let plec = "X";
+        if (pola[5].checked) {
+            plec = "H";
+        } else if (pola[6].checked) {
+            plec = "M";
+        } else if (pola[7].checked) {
+            plec ="X";
+        }
+
+//STANY//
+            const stany = {
+            "Aguascalientes": "AG",
+            "Baja California Norte": "BC",
+            "Baja California Sur": "BS",
+            "Chihuahua": "CH",
+            "Colima": "CL",
+            "Campeche": "CM",
+            "Coahuila": "CO",
+            "Chiapas": "CS",
+            "Distrito Federal": "DF",
+            "Durango": "DG",
+            "Guerrero": "GR",
+            "Guanajuato": "GT",
+            "Hidalgo": "HG",
+            "Jalisco": "JA",
+            "Michoacan": "MI",
+            "Morelos": "MO",
+            "Nayarit": "NA",
+            "Nuevo Leon": "NL",
+            "Oaxaca": "OA",
+            "Puebla": "PU",
+            "Quintana Roo": "QR",
+            "Queretaro": "QT",
+            "Sinaloa": "SI",
+            "San Luis Potosi": "SL",
+            "Sonora": "SO",
+            "Tabasco": "TB",
+            "Tlaxcala": "TL",
+            "Tamaulipas": "TM",
+            "Veracruz": "VE",
+            "Yucatan": "YU",
+            "Zacatecas": "ZA",
+            "México": "EM"
+        };
+            let kodStanu = stany[pola[8].value] || "NE";
+
+        // OBLICZANIE 18. CYFRY
+        let kod17 = p1 + p2 + p3 + p4 + dataSklejona + plec + kodStanu + p8 + p9 + p10 + p11;
+        let slownik = "0123456789ABCDEFGHIJKLMN&OPQRSTUVWXYZ";
+        let suma = 0;
+
+        for (let i = 0; i < 17; i++) {
+            let wartosc = slownik.indexOf(kod17[i]);
+            if (wartosc === -1) wartosc = 0;
+            suma += wartosc * (18 - i);
+        }
+        let p12 = (10 - (suma % 10)) % 10;
+        
+        document.getElementById("wynik").innerText = kod17 + p12;
+    }
+</script>
 </head>
 <body>
-    
+    <form action="Ankieta">
+  <fieldset>
+    <legend>CURP</legend>
+    Surname:<br>
+    <input type="text" name="nazwisko"><br><br>
+    Second Surname:<br>
+    <input type="text" name="drugie_nazwisko"><br><br>
+    Name:<br>
+    <input type="text" name="imie"><br><br>
+    Second Name:<br>
+    <input type="text" name="drugie_imie"><br><br>
+    Birth:<br>
+    <input type="date" name="urodziny"><br><br>
+    Gender:<br>
+        <input type="checkbox" name="mezczyzna" value="mezczyzna"> Male<br>
+        <input type="checkbox" name="kobieta" value="kobieta"> Women<br>
+        <input type="checkbox" name="non-binary" value="non-binary"> Non-binary<br><br>
+    Born:<br>
+        <input list="miejsce_urodzenia">
+    <datalist id="miejsce_urodzenia">
+        <option name="AG" value="Aguascalientes"></option>
+        <option name="BC" value="Baja California Norte"></option>
+        <option name="BS" value="Baja California Sur"></option>
+        <option name="CH" value="Chihuahua"></option>
+        <option name="CL" value="Colima"></option>
+        <option name="CM" value="Campeche"></option>
+        <option name="CO" value="Coahuila"></option>
+        <option name="CS" value="Chiapas"></option>
+        <option name="DF" value="Distrito Federal"></option>
+        <option name="DG" value="Durango"></option>
+        <option name="GR" value="Guerrero"></option>
+        <option name="GT" value="Guanajuato"></option>
+        <option name="HG" value="Hidalgo"></option>
+        <option name="JA" value="Jalisco"></option>
+        <option name="MI" value="Michoacan"></option>
+        <option name="MO" value="Morelos"></option>
+        <option name="NA" value="Nayarit"></option>
+        <option name="NL" value="Nuevo Leon"></option>
+        <option name="OA" value="Oaxaca"></option>
+        <option name="PU" value="Puebla"></option>
+        <option name="QR" value="Quintana Roo"></option>
+        <option name="QT" value="Queretaro"></option>
+        <option name="SI" value="Sinaloa"></option>
+        <option name="SL" value="San Luis Potosi"></option>
+        <option name="SO" value="Sonora"></option>
+        <option name="TB" value="Tabasco"></option>
+        <option name="TL" value="Tlaxcala"></option>
+        <option name="TM" value="Tamaulipas"></option>
+        <option name="VE" value="Veracruz"></option>
+        <option name="YU" value="Yucatan"></option>
+        <option name="ZA" value="Zacatecas"></option>
+        <option name="EM" value="México"></option>
+        <option value="NE"></option>
+    </datalist></br>
+    </br>
+    <input type="reset">
+  </fieldset>
+</br>
+  <button type="button" onclick="generujKod()">Generuj</button>
+    <p>Wynik: <strong id="wynik">---</strong></p>
 </body>
 </html>
