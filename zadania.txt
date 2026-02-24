@@ -1,0 +1,2 @@
+zad. 1
+wyciagniecie javaScript do osbnego pliku .js i przekazywanie wartości wejsciowych w parametrach funkcji.
