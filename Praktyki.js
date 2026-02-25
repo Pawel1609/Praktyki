@@ -1,7 +1,7 @@
 
-function wyswietlDane(imie, drugie_imie, nazwisko, drugie_nazwisko, miasto, urodziny, plec_mezczyzna, kod) {
+function wyswietlDane(imie, drugie_imie, nazwisko, drugieNazwisko, miasto, urodziny, plec_mezczyzna, kod) {
     const komunikat = "Nazwisko: " + nazwisko + "<br>" +
-                      "Drugie nazwisko: " + drugie_nazwisko + "<br>" +
+                      "Drugie nazwisko: " + drugieNazwisko + "<br>" +
                       "Imie: "+ imie + "<br>" +
                       "Drugie imie: " + drugie_imie + "<br>" +
                       "Data urodzenia: " + urodziny + "<br>" +
@@ -12,9 +12,9 @@ function wyswietlDane(imie, drugie_imie, nazwisko, drugie_nazwisko, miasto, urod
     document.getElementById("wynik").innerHTML = komunikat;
 }
 
-function generujeCURP(nazwisko, drugieNazwisko, imie, drugieimieZFormularza, plec, miasto, data) {
-        let pie_lit_nazwiska = nazwisko[0]
-        if (nazwisko[0]) {
+function generujeCURP(nazwisko, drugieNazwisko, imie, drugieimieZFormularza, plec, miasto, urodziny) {
+     if (!nazwisko) return alert("Napisz nazwisko!");    
+    if (nazwisko[0]) {
             p1 = nazwisko[0];
         } else {
             p1 = "X";
@@ -38,7 +38,6 @@ function generujeCURP(nazwisko, drugieNazwisko, imie, drugieimieZFormularza, ple
             p4 = "X";
         }
             let wynik_curp = (p1 + p2 + p3 + p4)
-        document.getElementById("wynik").innerHTML = "Początek CURP: " + wynik_curp;
     
 //AI NAPISALO COS O SPOLGLOSKACH ITP//
         let p8 = ""; // tu wpadnie spółgłoska nazwiska
@@ -66,9 +65,9 @@ function generujeCURP(nazwisko, drugieNazwisko, imie, drugieimieZFormularza, ple
             }
         }
 //DATA OD AI//
-        if (!dataZInputa) return alert("Wybierz datę!");
+        if (!urodziny) return alert("Wybierz datę!");
 
-        let obiektDaty = new Date(dataZInputa); // Zamieniamy tekst na "inteligentną" datę
+        let obiektDaty = new Date(urodziny); // Zamieniamy tekst na "inteligentną" datę
 
         let rokPelny = obiektDaty.getFullYear(); // Pobiera pełne 2024
         let miesiacLiczba = obiektDaty.getMonth() + 1; // JS liczy miesiące od 0, więc dodajemy 1
@@ -122,7 +121,8 @@ function generujeCURP(nazwisko, drugieNazwisko, imie, drugieimieZFormularza, ple
             "Zacatecas": "ZA",
             "México": "EM"
         };
-        let kodStanu = stany[miastoZFormularza] || "NE"; 
+        let kodStanu = stany[miasto] || "NE"; 
+        
         if (document.getElementById("plec_mezczyzna").checked) {
             plec = "H"; // Hombre (Mężczyzna)
         } else {
@@ -141,5 +141,6 @@ function generujeCURP(nazwisko, drugieNazwisko, imie, drugieimieZFormularza, ple
         let p12 = (10 - (suma % 10)) % 10;
         
         return kod17 + p12;
+        return wynik_curp;
     }
     

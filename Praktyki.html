@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Praktyki</title>
-<script src="Praktyki.js">
-    
+<script src="Praktyki.js"></script>
+<script>
     function napiszDanenastronie() {
     let imie = document.getElementById("imie").value;
     let drugieimie = document.getElementById("drugie_imie").value;
@@ -18,8 +18,9 @@
         plec_ZFormularza = "Kobieta";
     else
         plec_ZFormularza = "Non-binary";
+    let finalnyKod = generujeCURP(nazwisko, drugieNazwisko, imie, drugieimie, plec_ZFormularza, miasto, data);
 
-    wyswietlDane(nazwisko, drugieNazwisko, imie, drugieimieZFormularza, miastoZFormularza, dataZInputa, plec_ZFormularza);
+    wyswietlDane(imie, drugieimie, nazwisko, drugieNazwisko, miasto, data, plec_ZFormularza, finalnyKod);
 }
 </script>
 </head>
@@ -82,8 +83,7 @@
     <input type="reset">
   </fieldset>
 </br>
-  <button type="button" onclick="let finalnyKod = generujeCURP();
-    wyswietlDane(imie, drugieimie, nazwisko, drugieNazwisko, miasto, data, plec_ZFormularza);">Generuj</button>
+    <button type="button" onclick="napiszDanenastronie()">Generuj</button>
     <p><strong id="wynik">---</strong></p>
 </body>
 </html>
