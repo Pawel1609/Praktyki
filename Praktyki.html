@@ -12,15 +12,18 @@
     let drugieNazwisko = document.getElementById("drugie_nazwisko").value;
     let miasto = document.getElementById("miasto").value;
     let data = document.getElementById("urodziny").value;
-    if (document.getElementById("plec_mezczyzna").checked)
-        plec_ZFormularza = "Mężczyzna";
-    else if (document.getElementById("plec_kobieta").checked)
-        plec_ZFormularza = "Kobieta";
-    else
-        plec_ZFormularza = "Non-binary";
-    let finalnyKod = generujeCURP(nazwisko, drugieNazwisko, imie, drugieimie, plec_ZFormularza, miasto, data);
 
-    wyswietlDane(imie, drugieimie, nazwisko, drugieNazwisko, miasto, data, plec_ZFormularza, finalnyKod);
+    if (document.getElementById("plec_M").checked) {
+            plec = "H"; // Hombre (Mężczyzna)
+        } else if (document.getElementById("plec_K").checked){
+            plec = "M"; // Mujer (Kobieta)
+        } else {
+            plec = "X"; // Non-binary
+        }
+    let finalnyKod = generujeCURP(nazwisko, drugieNazwisko, imie, drugieimie, plec, miasto, data);
+
+    let komunikat = wyswietlDane(imie, drugieimie, nazwisko, drugieNazwisko, miasto, data, plec, finalnyKod);
+document.getElementById("wynik").innerHTML = komunikat;
 }
 </script>
 </head>
@@ -39,9 +42,9 @@
     Birth:<br>
     <input type="date" id="urodziny" name="urodziny"><br><br>
     Gender:<br>
-        <input type="radio" id="plec_mezczyzna" name="plec" value="Mężczyzna"> Male<br>
-        <input type="radio" id="plec_kobieta" name="plec" value="Kobieta"> Women<br>
-        <input type="radio" id="plec_nonbinary" name="plec" value="Non-binary"> Non-binary<br>
+        <input type="radio" id="plec_M" name="plec" value="Mężczyzna"> Male<br>
+        <input type="radio" id="plec_K" name="plec" value="Kobieta"> Women<br>
+        <input type="radio" id="plec_N" name="plec" value="Non-binary"> Non-binary<br>
 
         <input list="miejsce_urodzenia" id="miasto">
     <datalist id="miejsce_urodzenia">

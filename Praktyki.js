@@ -8,38 +8,32 @@ function wyswietlDane(imie, drugie_imie, nazwisko, drugieNazwisko, miasto, urodz
                       "Płeć: " + plec_mezczyzna + "<br>" +
                       "Stan: " + miasto + "<br>" +
                       "Kod CURP: " + kod;
-
-    document.getElementById("wynik").innerHTML = komunikat;
+return komunikat;
 }
-
+    
 function generujeCURP(nazwisko, drugieNazwisko, imie, drugieimieZFormularza, plec, miasto, urodziny) {
-     if (!nazwisko) return alert("Napisz nazwisko!");    
     if (nazwisko[0]) {
             p1 = nazwisko[0];
         } else {
             p1 = "X";
         }
-        let pie_lit_dru_nazwiska = drugieNazwisko[0];
         if (drugieNazwisko[0]) {
             p2 = drugieNazwisko[0];
         } else {
             p2 = "X";
         }
-        let pie_lit_imienia = imie[0]
         if (imie[0]) {
             p3 = imie[0];
         } else {
             p3 = "X";
         }
-        let pie_lit_dru_imienia = drugieimieZFormularza[0]
         if (drugieimieZFormularza[0]) {
             p4 = drugieimieZFormularza[0];
         } else {
             p4 = "X";
         }
-            let wynik_curp = (p1 + p2 + p3 + p4)
     
-//AI NAPISALO COS O SPOLGLOSKACH ITP//
+//SPOLGLOSKACH ITP//
         let p8 = ""; // tu wpadnie spółgłoska nazwiska
         for (let i = 1; i < nazwisko.length; i++) {
             const samogloski = "AEIOUY";
@@ -64,9 +58,7 @@ function generujeCURP(nazwisko, drugieNazwisko, imie, drugieimieZFormularza, ple
                 break;
             }
         }
-//DATA OD AI//
-        if (!urodziny) return alert("Wybierz datę!");
-
+//DATA//
         let obiektDaty = new Date(urodziny); // Zamieniamy tekst na "inteligentną" datę
 
         let rokPelny = obiektDaty.getFullYear(); // Pobiera pełne 2024
@@ -121,14 +113,8 @@ function generujeCURP(nazwisko, drugieNazwisko, imie, drugieimieZFormularza, ple
             "Zacatecas": "ZA",
             "México": "EM"
         };
-        let kodStanu = stany[miasto] || "NE"; 
-        
-        if (document.getElementById("plec_mezczyzna").checked) {
-            plec = "H"; // Hombre (Mężczyzna)
-        } else {
-            plec = "M"; // Mujer (Kobieta)
-        }
-        // OBLICZANIE 18. CYFRY
+        let kodStanu = stany[miasto]; 
+// OBLICZANIE 18. CYFRY
         let kod17 = (p1 + p2 + p3 + p4 + dataSklejona + plec + kodStanu + p8 + p9 + p10 + p11).toUpperCase();
         let slownik = "0123456789ABCDEFGHIJKLMN&OPQRSTUVWXYZ";
         let suma = 0;
@@ -141,6 +127,4 @@ function generujeCURP(nazwisko, drugieNazwisko, imie, drugieimieZFormularza, ple
         let p12 = (10 - (suma % 10)) % 10;
         
         return kod17 + p12;
-        return wynik_curp;
-    }
-    
+    }   
