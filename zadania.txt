@@ -1,2 +1,17 @@
 zad. 1
 wyciagniecie javaScript do osbnego pliku .js i przekazywanie wartości wejsciowych w parametrach funkcji.
+
+
+zad 2.
+Zadanie do wykonania na nowym branchu, odbitym z maina. Na koniec należy wystawić pull request z tego brancha z powrotem do maina
+Należy podzielić funkcję generowania curpa na mniejsze funkcje. Funkcja generujaca curp powinna jedynie sklejac wyniki tych funkcji. Proponowane osobne funkcja dla:
+- generowania pierwszych 4 znakow wynikajacych z imion i nazwisk
+- generowania nastepnych 6 znakow wynikajacych z daty urodzenia
+- generowania znakow wynikajacych z plci
+- generowania checksumy
+
+zad 3.
+Zadanie do wykonania na nowym branchu, odbitym z maina. Na koniec należy wystawić pull request z tego brancha z powrotem do maina
+Należy zaimplementować logikę usuwania wulgaryzmów z CURPa (opisana w https://en.wikipedia.org/wiki/Unique_Population_Registry_Code#Catalog_of_Inappropriate_Words)
+katalog takich słów i wyrażeń, którymi należy je zastąpić, jest dostępny pod https://solucionfactible.com/sfic/resources/files/palabrasInconvenientes-rfc.pdf
+O ile można się wspomagać sztuczną inteligencją by nauczyć się parsowania i manipulacji tekstem nadal należy zrozumieć każdą wykorzystywaną funkcję
