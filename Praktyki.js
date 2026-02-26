@@ -1,5 +1,5 @@
 
-function wyswietlDane(imie, drugie_imie, nazwisko, drugieNazwisko, miasto, urodziny, plec_mezczyzna, kod) {
+function wyswietlDane(imie, drugie_imie, nazwisko, drugieNazwisko, miasto, urodziny, plec_mezczyzna, kod, finalnyKod) {
     const komunikat = "Nazwisko: " + nazwisko + "<br>" +
                       "Drugie nazwisko: " + drugieNazwisko + "<br>" +
                       "Imie: "+ imie + "<br>" +
@@ -7,7 +7,7 @@ function wyswietlDane(imie, drugie_imie, nazwisko, drugieNazwisko, miasto, urodz
                       "Data urodzenia: " + urodziny + "<br>" +
                       "Płeć: " + plec_mezczyzna + "<br>" +
                       "Stan: " + miasto + "<br>" +
-                      "Kod CURP: " + kod;
+                      "Kod CURP: " +kod;
 return komunikat;
 }
     
@@ -114,8 +114,9 @@ function generujeCURP(nazwisko, drugieNazwisko, imie, drugieimieZFormularza, ple
             "México": "EM"
         };
         let kodStanu = stany[miasto]; 
-// OBLICZANIE 18. CYFRY
-        let kod17 = (p1 + p2 + p3 + p4 + dataSklejona + plec + kodStanu + p8 + p9 + p10 + p11).toUpperCase();
+// OBLICZANIE 18 CYFRY
+        let litery_z_nazwisk = cenzura_na_wulgaryzmy(p1, p2, p3, p4);
+        let kod17 = (litery_z_nazwisk + dataSklejona + plec + kodStanu + p8 + p9 + p10 + p11).toUpperCase();
         let slownik = "0123456789ABCDEFGHIJKLMN&OPQRSTUVWXYZ";
         let suma = 0;
 
@@ -127,4 +128,55 @@ function generujeCURP(nazwisko, drugieNazwisko, imie, drugieimieZFormularza, ple
         let p12 = (10 - (suma % 10)) % 10;
         
         return kod17 + p12;
+
+        
+
     }   
+
+    function cenzura_na_wulgaryzmy(p1, p2, p3, p4) {
+        var tekst = p1 + p2 + p3 + p4;
+        const zmienione = tekst.replace("BUEI", "BUEX")
+                               .replace("CACA", "CACX")
+                               .replace("CAGA", "CAGX")
+                               .replace("CAKA", "CAKX")
+                               .replace("COGE", "COGX")
+                               .replace("COJE", "COJX")
+                               .replace("COJO", "COJX")
+                               .replace("FETO", "FETX")
+                               .replace("JOTO", "JOTX")
+                               .replace("KACO", "KACX")
+                               .replace("KAGO", "KAGX")
+                               .replace("KOJO", "KOJX")
+                               .replace("KULO", "KULX")
+                               .replace("MAMO", "MAMX")
+                               .replace("MEAS", "MEAX")
+                               .replace("MION", "MIOX")
+                               .replace("MULA", "MULX")
+                               .replace("PEDO", "PEDX")
+                               .replace("PUTA", "PUTX")
+                               .replace("QULO", "QULX")
+                               .replace("RUIN", "RUIX")
+                               .replace("BUEY", "BUEX")
+                               .replace("CACO", "CACX")
+                               .replace("CAGO", "CAGX")
+                               .replace("CAKO", "CAKX")
+                               .replace("COJA", "COJX") 
+                               .replace("COJI", "COJX")
+                               .replace("CULO", "CULX")
+                               .replace("GUEY", "GUEX")
+                               .replace("KACA", "KACX")
+                               .replace("KAGA", "KAGX")
+                               .replace("KOGE", "KOGX")
+                               .replace("KAKA", "KAKX")
+                               .replace("MAME", "MAMX")
+                               .replace("MEAR", "MEAX")
+                               .replace("MEON", "MEOX")
+                               .replace("MOCO", "MOCX") 
+                               .replace("PEDA", "PEDX")
+                               .replace("PENE", "PENX")
+                               .replace("PUTO", "PUTX")
+                               .replace("RATA","RATX")
+        console.log(tekst + "\nprzed zmianą");
+        console.log(zmienione + "\npo zmianie");
+        return zmienione;
+    }
