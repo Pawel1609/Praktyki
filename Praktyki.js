@@ -1,5 +1,5 @@
 
-function wyswietlDane(imie, drugie_imie, nazwisko, drugieNazwisko, miasto, urodziny, plec_mezczyzna, kod, finalnyKod) {
+function wyswietlDane(imie, drugie_imie, nazwisko, drugieNazwisko, miasto, urodziny, plec_mezczyzna, kod) {
     const komunikat = "Nazwisko: " + nazwisko + "<br>" +
                       "Drugie nazwisko: " + drugieNazwisko + "<br>" +
                       "Imie: "+ imie + "<br>" +
@@ -115,8 +115,9 @@ function generujeCURP(nazwisko, drugieNazwisko, imie, drugieimieZFormularza, ple
         };
         let kodStanu = stany[miasto]; 
 // OBLICZANIE 18 CYFRY
-        let litery_z_nazwisk = cenzura_na_wulgaryzmy(p1, p2, p3, p4);
-        let kod17 = (litery_z_nazwisk + dataSklejona + plec + kodStanu + p8 + p9 + p10 + p11).toUpperCase();
+        let suroweLitery = (p1 + p2 + p3 + p4).toUpperCase();
+        let literyPoCenzurze = cenzurujWulgaryzmy(suroweLitery);
+        let kod17 = (literyPoCenzurze + dataSklejona + plec + kodStanu + p8 + p9 + p10 + p11).toUpperCase();
         let slownik = "0123456789ABCDEFGHIJKLMN&OPQRSTUVWXYZ";
         let suma = 0;
 
@@ -127,15 +128,13 @@ function generujeCURP(nazwisko, drugieNazwisko, imie, drugieimieZFormularza, ple
         }
         let p12 = (10 - (suma % 10)) % 10;
         
-        return kod17 + p12;
-
         
-
+    
+    return kod17 + p12;
     }   
 
-    function cenzura_na_wulgaryzmy(p1, p2, p3, p4) {
-        var tekst = p1 + p2 + p3 + p4;
-        const zmienione = tekst.replace("BUEI", "BUEX")
+    function cenzurujWulgaryzmy(suroweLitery) {
+        const zmienione = suroweLitery.replace("BUEI", "BUEX")
                                .replace("CACA", "CACX")
                                .replace("CAGA", "CAGX")
                                .replace("CAKA", "CAKX")
@@ -176,7 +175,7 @@ function generujeCURP(nazwisko, drugieNazwisko, imie, drugieimieZFormularza, ple
                                .replace("PENE", "PENX")
                                .replace("PUTO", "PUTX")
                                .replace("RATA","RATX")
-        console.log(tekst + "\nprzed zmianą");
+        console.log(suroweLitery + "\nprzed zmianą");
         console.log(zmienione + "\npo zmianie");
         return zmienione;
     }
