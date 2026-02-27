@@ -22,7 +22,7 @@
         }
     let finalnyKod = generujeCURP(nazwisko, drugieNazwisko, imie, drugieimie, plec, miasto, data);
 
-    let komunikat = wyswietlDane(imie, drugieimie, nazwisko, drugieNazwisko, miasto, data, plec, finalnyKod);
+    let komunikat = przygotujKomunikat(imie, drugieimie, nazwisko, drugieNazwisko, miasto, data, plec, finalnyKod);
 document.getElementById("wynik").innerHTML = komunikat;
 }
 </script>
@@ -80,7 +80,7 @@ document.getElementById("wynik").innerHTML = komunikat;
         <option name="YU" value="Yucatan"></option>
         <option name="ZA" value="Zacatecas"></option>
         <option name="EM" value="México"></option>
-        <option value="NE"></option>
+        <option name="NE" value="NE"></option>
     </datalist></br>
     </br>
     <input type="reset">
