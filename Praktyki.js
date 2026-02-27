@@ -1,5 +1,5 @@
 
-//STANY//
+//Wartość Globalna//
     const stany = {
         "Aguascalientes": "AG",
         "Baja California Norte": "BC",
@@ -38,9 +38,9 @@
 
     const slownik = "0123456789ABCDEFGHIJKLMN&OPQRSTUVWXYZ";
 
-//wyswietlDane//
+    const samogloski = "AEIOUY";
 
-    function przyjmowanieDane(imie, drugie_imie, nazwisko, drugieNazwisko, miasto, urodziny, plec, kod) {
+    function przygotujKomunikat(imie, drugie_imie, nazwisko, drugieNazwisko, miasto, urodziny, plec, kod) {
         const komunikat = "Nazwisko: " + nazwisko + "<br>" +
                         "Drugie nazwisko: " + drugieNazwisko + "<br>" +
                         "Imie: "+ imie + "<br>" +
@@ -52,10 +52,8 @@
     return komunikat;
     }
 
-//spolgloski//
 
-    function znajdzPierwszaSpolgloske(tekst) {
-        const samogloski = "AEIOUY";
+    function znajdzSpolgloske(tekst) {
         
         for (let i = 1; i < tekst.length; i++) {
             let litera = tekst[i].toUpperCase();
@@ -67,14 +65,13 @@
     }
 
     function spolgloski(nazwisko, drugieNazwisko, imie) {
-        const pierwszaSpolgloskaNazwiska = znajdzPierwszaSpolgloske(nazwisko);
-        const pierwszaSpolgloskaDrugiegoNazwiska = znajdzPierwszaSpolgloske(drugieNazwisko);
-        const pierwszaSpolgloskaImienia = znajdzPierwszaSpolgloske(imie);
+        const pierwszaSpolgloskaNazwiska = znajdzSpolgloski(nazwisko);
+        const pierwszaSpolgloskaDrugiegoNazwiska = znajdzSpolgloski(drugieNazwisko);
+        const pierwszaSpolgloskaImienia = znajdzSpolgloski(imie);
     
         return pierwszaSpolgloskaNazwiska + pierwszaSpolgloskaDrugiegoNazwiska + pierwszaSpolgloskaImienia;
     }
 
-//liczba_17//
 
     function sprawdzWiek (data_urodzenia) {
         let obiektDaty = new Date(data_urodzenia);
@@ -88,9 +85,8 @@
     return p11;
     }
 
-//obliczanie_18_cyfry//
 
-    function obliczanie_18_cyfry(kod17){
+    function obliczanie18Cyfry(kod17){
         let suma = 0;
 
         for (let i = 0; i < 17; i++) {
@@ -98,13 +94,12 @@
             if (wartosc === -1) wartosc = 0;
             suma += wartosc * (18 - i);
         }
-        let cyfraOsiemnasta = (10 - (suma % 10)) % 10;
-        return cyfraOsiemnasta
+        let cyfraKontrolna = (10 - (suma % 10)) % 10;
+        return cyfraKontrolna
     }
 
-//Data//
 
-    function wylicz_cyfry_z_daty_urodzin(urodziny) {
+    function wyliczCyfryZDatyUrodzin(urodziny) {
         let obiektDaty = new Date(urodziny); // Zamieniamy tekst na "inteligentną" datę
         let rokPelny = obiektDaty.getFullYear(); // Pobiera pełne 2026
         let miesiacLiczba = obiektDaty.getMonth() + 1; // JS liczy miesiące od 0, więc dodajemy 1
@@ -118,7 +113,7 @@
         return (rokDoKodu + miesiacDoKodu + dzienDoKodu);
     }
 
-    function pierwsze_litery(nazwisko, drugieNazwisko, imie, drugieimieZFormularza) {
+    function pierwszeLitery(nazwisko, drugieNazwisko, imie, drugieimieZFormularza) {
         if (nazwisko[0]) {
             p1 = nazwisko[0];
         } else {
@@ -142,16 +137,14 @@
     return (p1 + p2 + p3 + p4).toUpperCase();
     }
 
-//generujeCURP//
 
-    function generujeCURP(nazwisko, drugieNazwisko, imie, drugieimieZFormularza, plec, miasto, urodziny, data_urodzenia) {
-        const pierwsze = pierwsze_litery(nazwisko, drugieNazwisko, imie, drugieimieZFormularza);
-        const dataUzytkownika = wylicz_cyfry_z_daty_urodzin(urodziny);
-        const plecUzytkownika = plec; 
+    function generujeCURP(nazwisko, drugieNazwisko, imie, drugieimieZFormularza, plec, miasto, urodziny) {
+        const pierwsze = pierwszeLitery(nazwisko, drugieNazwisko, imie, drugieimieZFormularza);
+        const dataUzytkownika = wyliczCyfryZDatyUrodzin(urodziny);
         const miastoUzytkownika = stany[miasto];
         const obliczanieSpolglosek = spolgloski(imie, nazwisko, drugieNazwisko);
         const liczba = sprawdzWiek(urodziny);
-        const kod17 = (pierwsze + dataUzytkownika + plecUzytkownika + miastoUzytkownika + obliczanieSpolglosek + liczba).toUpperCase();
-        const cyfraOsiemnasta = obliczanie_18_cyfry(kod17);
-        return kod17 + cyfraOsiemnasta;
+        const kod17 = (pierwsze + dataUzytkownika + plec + miastoUzytkownika + obliczanieSpolglosek + liczba).toUpperCase();
+        const cyfraKontrolna = obliczanie18Cyfry(kod17);
+        return kod17 + cyfraKontrolna;
     }
