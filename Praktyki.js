@@ -120,9 +120,7 @@
         let miesiacDoKodu = miesiacLiczba.toString().padStart(2, "0"); // padStart dodaje zero na początku
         let dzienDoKodu = dzienLiczba.toString().padStart(2, "0");
 
-        let dataSklejona = rokDoKodu + miesiacDoKodu + dzienDoKodu;
-
-        return dataSklejona
+        return (rokDoKodu + miesiacDoKodu + dzienDoKodu);
     }
 
 //pierwsze_litery//
