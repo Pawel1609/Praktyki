@@ -32,18 +32,21 @@
         "Veracruz": "VE",
         "Yucatan": "YU",
         "Zacatecas": "ZA",
-        "México": "EM"
+        "México": "EM",
+        "NE": "NE"
     };
+
+    const slownik = "0123456789ABCDEFGHIJKLMN&OPQRSTUVWXYZ";
 
 //wyswietlDane//
 
-    function wyswietlDane(imie, drugie_imie, nazwisko, drugieNazwisko, miasto, urodziny, plec_mezczyzna, kod) {
+    function przyjmowanieDane(imie, drugie_imie, nazwisko, drugieNazwisko, miasto, urodziny, plec, kod) {
         const komunikat = "Nazwisko: " + nazwisko + "<br>" +
                         "Drugie nazwisko: " + drugieNazwisko + "<br>" +
                         "Imie: "+ imie + "<br>" +
                         "Drugie imie: " + drugie_imie + "<br>" +
                         "Data urodzenia: " + urodziny + "<br>" +
-                        "Płeć: " + plec_mezczyzna + "<br>" +
+                        "Płeć: " + plec + "<br>" +
                         "Stan: " + miasto + "<br>" +
                         "Kod CURP: " + kod;
     return komunikat;
@@ -51,39 +54,32 @@
 
 //spolgloski//
 
+    function znajdzPierwszaSpolgloske(tekst) {
+        const samogloski = "AEIOUY";
+        
+        for (let i = 1; i < tekst.length; i++) {
+            let litera = tekst[i].toUpperCase();
+            if (!samogloski.includes(litera)) { 
+                return litera; 
+            }
+        }
+        return "X";
+    }
+
     function spolgloski(nazwisko, drugieNazwisko, imie) {
-            let p8 = ""; // tu wpadnie spółgłoska nazwiska
-            for (let i = 1; i < nazwisko.length; i++) {
-                const samogloski = "AEIOUY";
-                if (!samogloski.includes(nazwisko[i])) { 
-                    p8 = nazwisko[i];
-                    break;
-                }
-            }
-            let p9 = ""; // spółgłoska drugiego nazwiska
-            for (let i = 1; i < drugieNazwisko.length; i++) {
-                const samogloski = "AEIOUY";
-                if (!samogloski.includes(drugieNazwisko[i])) { 
-                    p9 = drugieNazwisko[i];
-                    break;
-                }
-            }
-            let p10 = ""; // spółgłoska imienia
-            for (let i = 1; i < imie.length; i++) {
-                const samogloski = "AEIOUY";
-                if (!samogloski.includes(imie[i])) { 
-                    p10 = imie[i];
-                    break;
-                }
-            }
-    return (p8 + p9 + p10).toUpperCase();
+        const pierwszaSpolgloskaNazwiska = znajdzPierwszaSpolgloske(nazwisko);
+        const pierwszaSpolgloskaDrugiegoNazwiska = znajdzPierwszaSpolgloske(drugieNazwisko);
+        const pierwszaSpolgloskaImienia = znajdzPierwszaSpolgloske(imie);
+    
+        return pierwszaSpolgloskaNazwiska + pierwszaSpolgloskaDrugiegoNazwiska + pierwszaSpolgloskaImienia;
     }
 
 //liczba_17//
 
-    function liczba_17 (data_urodzenia) {
+    function sprawdzWiek (data_urodzenia) {
         let obiektDaty = new Date(data_urodzenia);
         let rokPelny = obiektDaty.getFullYear();
+        let p11;
         if (rokPelny >= 2000) { 
             p11 = "A";
         } else {
@@ -95,7 +91,6 @@
 //obliczanie_18_cyfry//
 
     function obliczanie_18_cyfry(kod17){
-        let slownik = "0123456789ABCDEFGHIJKLMN&OPQRSTUVWXYZ";
         let suma = 0;
 
         for (let i = 0; i < 17; i++) {
@@ -103,8 +98,8 @@
             if (wartosc === -1) wartosc = 0;
             suma += wartosc * (18 - i);
         }
-        let p12 = (10 - (suma % 10)) % 10;
-        return p12
+        let cyfraOsiemnasta = (10 - (suma % 10)) % 10;
+        return cyfraOsiemnasta
     }
 
 //Data//
@@ -122,8 +117,6 @@
 
         return (rokDoKodu + miesiacDoKodu + dzienDoKodu);
     }
-
-//pierwsze_litery//
 
     function pierwsze_litery(nazwisko, drugieNazwisko, imie, drugieimieZFormularza) {
         if (nazwisko[0]) {
@@ -152,13 +145,13 @@
 //generujeCURP//
 
     function generujeCURP(nazwisko, drugieNazwisko, imie, drugieimieZFormularza, plec, miasto, urodziny, data_urodzenia) {
-        const Pierwsze = pierwsze_litery(nazwisko, drugieNazwisko, imie, drugieimieZFormularza);
-        const Data_uzytkownika = wylicz_cyfry_z_daty_urodzin(urodziny);
-        const Plec_uzytkownika = plec; 
-        const Miasto_uzytkownika = stany[miasto] || "NE";
-        const Obliczanie_spolglosek = spolgloski(imie, nazwisko, drugieNazwisko);
-        const Liczba = liczba_17(data_urodzenia);
-        const kod17 = (Pierwsze + Data_uzytkownika + Plec_uzytkownika + Miasto_uzytkownika + Obliczanie_spolglosek + Liczba).toUpperCase();
-        const p12 = obliczanie_18_cyfry(kod17);
-        return kod17 + p12;
+        const pierwsze = pierwsze_litery(nazwisko, drugieNazwisko, imie, drugieimieZFormularza);
+        const dataUzytkownika = wylicz_cyfry_z_daty_urodzin(urodziny);
+        const plecUzytkownika = plec; 
+        const miastoUzytkownika = stany[miasto];
+        const obliczanieSpolglosek = spolgloski(imie, nazwisko, drugieNazwisko);
+        const liczba = sprawdzWiek(urodziny);
+        const kod17 = (pierwsze + dataUzytkownika + plecUzytkownika + miastoUzytkownika + obliczanieSpolglosek + liczba).toUpperCase();
+        const cyfraOsiemnasta = obliczanie_18_cyfry(kod17);
+        return kod17 + cyfraOsiemnasta;
     }
