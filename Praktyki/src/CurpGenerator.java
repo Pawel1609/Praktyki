@@ -1,3 +1,5 @@
+import java.sql.SQLData;
+import java.text.Normalizer;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
@@ -75,35 +77,38 @@ public class CurpGenerator {
     }
     Map<String, String> map = new HashMap<>();
     String slownik = "0123456789ABCDEFGHIJKLMN&OPQRSTUVWXYZ";
-    String samogloski = "AEIOUY";
+    String samogloski = "AEIOUYaeiouy ";
+    String spolgloski = "BCDFGHJKLMNPRSTWZbcdfghjklmnprstw ";
 
     String pierwszeLitery(String nazwisko, String drugieNazwisko, String imie, String drugieimieZFormularza) {
-        char p1;
-        char p2;
-        char p3;
-        char p4;
+        char p1 = 0;
+        char p2 = 0;
+        char p3 = 0;
+        char p4 = 0;
+        char p5 = 0;
         if (nazwisko.length()>0) {
             p1 = nazwisko.charAt(0);
-        } else {
-            p1 = 'X';
+        }
+        for (int i = 1; i < nazwisko.length(); i++) {
+            Character litera = nazwisko.charAt(i);
+            if (!spolgloski.contains(litera.toString())){
+                p2 = nazwisko.charAt(i);
+                break;
+            }
         }
         if (drugieNazwisko.length()>0) {
-            p2 = drugieNazwisko.charAt(0);
-        } else {
-            p2 = 'X';
-        }
-        if (imie.length()>0) {
-            p3 = imie.charAt(0);
+            p3 = drugieNazwisko.charAt(0);
         } else {
             p3 = 'X';
         }
+        if (imie.length()>0) {
+            p4 = imie.charAt(0);
+        }
         if (drugieimieZFormularza.length()>0) {
-            p4 = drugieimieZFormularza.charAt(0);
-        } else {
-            p4 = 'X';
+            p5 = drugieimieZFormularza.charAt(0);
         }
 
-        return ("" + p1 + p2 + p3 + p4);
+        return ("" + p1 + p2 + p3 + p4).toUpperCase();
     }
     String wyliczCyfryZDatyUrodzin(LocalDate urodziny) {
         Integer rokPelny = urodziny.getYear(); // Pobiera pełne 2026
@@ -134,10 +139,10 @@ public class CurpGenerator {
         for (int i = 1; i < tekst.length(); i++) {
             Character litera = tekst.charAt(i);
             if (!samogloski.contains(litera.toString())) {
-                return litera.toString();
+                return litera.toString().toUpperCase();
             }
         }
-        return "X";
+        return "X".toUpperCase();
     }
 
     String spolgloski(String nazwisko,String drugieNazwisko,String imie) {
@@ -145,7 +150,7 @@ public class CurpGenerator {
         String pierwszaSpolgloskaDrugiegoNazwiska = znajdzSpolgloske(drugieNazwisko);
         String pierwszaSpolgloskaImienia = znajdzSpolgloske(imie);
 
-        return pierwszaSpolgloskaNazwiska + pierwszaSpolgloskaDrugiegoNazwiska + pierwszaSpolgloskaImienia;
+        return (pierwszaSpolgloskaNazwiska + pierwszaSpolgloskaDrugiegoNazwiska + pierwszaSpolgloskaImienia).toUpperCase();
     }
 
     String sprawdzWiek (LocalDate data_urodzenia) {
@@ -170,12 +175,24 @@ public class CurpGenerator {
         int cyfraKontrolna = (10 - (suma % 10)) % 10;
         return String.valueOf(cyfraKontrolna);
     }
-
+    private static String normalize(String input) {
+        return input == null ? null : Normalizer.normalize(input, Normalizer.Form.NFKD);
+    }
+    static String removeAccents(String input) {
+        return normalize(input).replaceAll("\\p{M}", "");
+    }
     String generujeCURP(String nazwisko, String drugieNazwisko, String imie, String drugieimieZFormularza, char plec, Stany miasto, LocalDate urodziny){
+        nazwisko = zmianaÑNaX(nazwisko);
+        imie = zmianaÑNaX(imie);
+        drugieNazwisko= zmianaÑNaX(drugieNazwisko);
+        nazwisko = removeAccents(nazwisko);
+        imie = removeAccents(imie);
+        drugieNazwisko = removeAccents(drugieNazwisko);
+        imie = powtarzająceSięImiona(imie, drugieimieZFormularza);
         String pierwsze = pierwszeLitery(nazwisko, drugieNazwisko, imie, drugieimieZFormularza);
         String dataUzytkownika = wyliczCyfryZDatyUrodzin(urodziny);
         String miastoUzytkownika = miasto.name();
-        String obliczanieSpolglosek = spolgloski(imie, nazwisko, drugieNazwisko);
+        String obliczanieSpolglosek = spolgloski(nazwisko, drugieNazwisko, imie);
         String liczba = sprawdzWiek(urodziny);
         String suroweLitery = pierwsze;
         przygotujSlownikWulgaryzmow();
@@ -239,4 +256,20 @@ public class CurpGenerator {
         return suroweLitery;
     }
 
+    String powtarzająceSięImiona (String imie, String drugieimieZFormularza) {
+        if (imie.equals("Maria")) {
+            imie = drugieimieZFormularza;
+        }
+        if (imie.equals("José")) {
+            imie = drugieimieZFormularza;
+        }
+        if (imie.equals("Jose")) {
+            imie = drugieimieZFormularza;
+        }
+        return imie;
+    }
+
+    String zmianaÑNaX(String cyfraKontrolna){
+        return cyfraKontrolna.replace('Ñ', 'X');
+    }
 }
