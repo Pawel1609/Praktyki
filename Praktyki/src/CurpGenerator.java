@@ -153,22 +153,23 @@ public class CurpGenerator {
         return (pierwszaSpolgloskaNazwiska + pierwszaSpolgloskaDrugiegoNazwiska + pierwszaSpolgloskaImienia).toUpperCase();
     }
 
-    String sprawdzWiek (LocalDate data_urodzenia) {
+    String sprawdzWiek (LocalDate data_urodzenia, char parametrSekwencji) {
         int rokPelny = data_urodzenia.getYear();
-        String p11;
+        char p11;
         if (rokPelny >= 2000) {
-            p11 = "A";
+            p11 = (char) ('A' + parametrSekwencji);
         } else {
-            p11 = "0";
+            p11 = (char) ('0' + parametrSekwencji);
         }
-        return p11;
+        return String.valueOf(p11).toUpperCase();
     }
 
     String obliczanie18Cyfry(String kod17){
         int suma = 0;
 
         for (int i = 0; i < 17; i++) {
-            int wartosc = slownik.indexOf(kod17.charAt(i));
+            char c =  kod17.charAt(i);
+            int wartosc = Character.getNumericValue(c);
             if (wartosc == -1) wartosc = 0;
             suma += wartosc * (18 - i);
         }
@@ -181,7 +182,7 @@ public class CurpGenerator {
     static String removeAccents(String input) {
         return normalize(input).replaceAll("\\p{M}", "");
     }
-    String generujeCURP(String nazwisko, String drugieNazwisko, String imie, String drugieimieZFormularza, char plec, Stany miasto, LocalDate urodziny){
+    String generujeCURP(String nazwisko, String drugieNazwisko, String imie, String drugieimieZFormularza, char plec, Stany miasto, LocalDate urodziny, char parametrSekwencji){
         nazwisko = zmianaÑNaX(nazwisko);
         imie = zmianaÑNaX(imie);
         drugieNazwisko= zmianaÑNaX(drugieNazwisko);
@@ -193,7 +194,7 @@ public class CurpGenerator {
         String dataUzytkownika = wyliczCyfryZDatyUrodzin(urodziny);
         String miastoUzytkownika = miasto.name();
         String obliczanieSpolglosek = spolgloski(nazwisko, drugieNazwisko, imie);
-        String liczba = sprawdzWiek(urodziny);
+        String liczba = sprawdzWiek(urodziny, parametrSekwencji);
         String suroweLitery = pierwsze;
         przygotujSlownikWulgaryzmow();
         String literyPoCenzurze = ocenzurujTresc(suroweLitery);

@@ -14,7 +14,7 @@ public class Main {
             System.out.println("i = " + i);
         }
         CurpGenerator generator = new CurpGenerator();
-        String wynik =generator.generujeCURP("Ziętarski", "Chmielewski", "Paweł", "Jacek", 'H', CurpGenerator.Stany.OA, LocalDate.of(2009,9,16));
+        String wynik =generator.generujeCURP("Ziętarski", "Chmielewski", "Paweł", "Jacek", 'H', CurpGenerator.Stany.OA, LocalDate.of(2009,9,16), (char) 0);
         System.out.println(wynik);
     }
 }
