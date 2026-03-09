@@ -14,3 +14,26 @@ Zadanie do wykonania na nowym branchu, odbitym z maina. Na koniec należy wystaw
 Należy zaimplementować logikę usuwania wulgaryzmów z CURPa (opisana w https://en.wikipedia.org/wiki/Unique_Population_Registry_Code#Catalog_of_Inappropriate_Words)
 katalog takich słów i wyrażeń, którymi należy je zastąpić, jest dostępny pod https://solucionfactible.com/sfic/resources/files/palabrasInconvenientes-rfc.pdf
 O ile można się wspomagać sztuczną inteligencją by nauczyć się parsowania i manipulacji tekstem nadal należy zrozumieć każdą wykorzystywaną funkcję
+
+zad 4.
+Przeniesienie logiki generujacej curp do javy
+
+zad 5.
+Napisanie testów jednostkowych dla wszystkich metod
+
+zad 6.
+Dodanie następujących reguł do generowania CURP:
+If special characters such as a slash (/), hyphen (-), period (.), apostrophe (‘), or
+diaeresis (¨) appear in the name or surname, they will be captured as they appear in the
+proof document, and an X will be assigned if that position is part of the CURP.
+
+Example:  
+`Essio Torres Bravo -> TOBX
+
+When one of the last names or the first name is compound, the first word will not be
+used if it is one of the following prepositions, conjunctions, articles, or contractions:
+DA, DAS, DE, DEL, DER, DI, DIE, DD, Y, L, LA, LOS, LAS, LE, LES, MAC, MC, VAN, VON
+In these cases, the following word corresponding to the name or surname will be used.
+
+Example: 
+Juan Angel de las Lomas Garces -> LOGA
