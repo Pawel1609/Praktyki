@@ -2,6 +2,7 @@ import java.sql.SQLData;
 import java.text.Normalizer;
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -76,9 +77,10 @@ public class CurpGenerator {
         NE
     }
     Map<String, String> map = new HashMap<>();
+    List<String> slowaBezZnaczenia = List.of("DA", "DAS", "DE", "DEL", "DER", "DI", "DIE", "DD", "Y", "L", "LA", "LOS", "LAS", "LE", "LES", "MAC", "MC", "VAN", "VON");
     String slownik = "0123456789ABCDEFGHIJKLMN&OPQRSTUVWXYZ";
-    String samogloski = "AEIOUYaeiouy ";
-    String spolgloski = "BCDFGHJKLMNPRSTWZbcdfghjklmnprstw ";
+    String samogloski = "AEIOUYaeiouy";
+    String spolgloski = "BCDFGHJKLMNPRSTWZbcdfghjklmnprstwz";
 
     String pierwszeLitery(String nazwisko, String drugieNazwisko, String imie, String drugieimieZFormularza) {
         char p1 = 0;
@@ -182,18 +184,17 @@ public class CurpGenerator {
     static String removeAccents(String input) {
         return normalize(input).replaceAll("\\p{M}", "");
     }
+
     String generujeCURP(String nazwisko, String drugieNazwisko, String imie, String drugieimieZFormularza, char plec, Stany miasto, LocalDate urodziny, char parametrSekwencji){
-        nazwisko = zmianaÑNaX(nazwisko);
-        imie = zmianaÑNaX(imie);
-        drugieNazwisko= zmianaÑNaX(drugieNazwisko);
-        nazwisko = removeAccents(nazwisko);
-        imie = removeAccents(imie);
-        drugieNazwisko = removeAccents(drugieNazwisko);
-        imie = powtarzająceSięImiona(imie, drugieimieZFormularza);
-        String pierwsze = pierwszeLitery(nazwisko, drugieNazwisko, imie, drugieimieZFormularza);
+        String wyczysczoneNazwisko = wyczyscTekst(nazwisko);
+        String wyczysczoneimie = wyczyscTekst(imie);
+        String wyczysczoneDrugieNazwisko = wyczyscTekst(drugieNazwisko);
+        String wyczysczoneDrugieImie = wyczyscTekst(drugieimieZFormularza);
+        imie = powtarzajaceSieImiona(wyczysczoneimie, wyczysczoneDrugieImie);
+        String pierwsze = pierwszeLitery( wyczysczoneNazwisko, wyczysczoneDrugieNazwisko, wyczysczoneimie, wyczysczoneDrugieImie);
         String dataUzytkownika = wyliczCyfryZDatyUrodzin(urodziny);
         String miastoUzytkownika = miasto.name();
-        String obliczanieSpolglosek = spolgloski(nazwisko, drugieNazwisko, imie);
+        String obliczanieSpolglosek = spolgloski( wyczysczoneNazwisko, wyczysczoneDrugieNazwisko, wyczysczoneimie);
         String liczba = sprawdzWiek(urodziny, parametrSekwencji);
         String suroweLitery = pierwsze;
         przygotujSlownikWulgaryzmow();
@@ -202,6 +203,14 @@ public class CurpGenerator {
         String cyfraKontrolna = obliczanie18Cyfry(kod17);
 
         return kod17 + cyfraKontrolna;
+    }
+
+    private String wyczyscTekst(String nazwisko) {
+        nazwisko = dajPierwszeSlowoKtoreMaZnaczenie(nazwisko);
+        nazwisko = zmianaZnakowNaX(nazwisko);
+        nazwisko = zmianaÑNaX(nazwisko);
+        nazwisko = removeAccents(nazwisko);
+        return nazwisko;
     }
 
     void przygotujSlownikWulgaryzmow() {
@@ -257,7 +266,7 @@ public class CurpGenerator {
         return suroweLitery;
     }
 
-    String powtarzająceSięImiona (String imie, String drugieimieZFormularza) {
+    String powtarzajaceSieImiona (String imie, String drugieimieZFormularza) {
         if (imie.equals("Maria")) {
             imie = drugieimieZFormularza;
         }
@@ -272,5 +281,26 @@ public class CurpGenerator {
 
     String zmianaÑNaX(String cyfraKontrolna){
         return cyfraKontrolna.replace('Ñ', 'X');
+    }
+    String zmianaZnakowNaX(String zmiana){
+        return zmiana.replace('/', 'X')
+                     .replace('-', 'X')
+                     .replace('.', 'X')
+                     .replace('‘', 'X')
+                     .replace('¨', 'X')
+                     .replace('`', 'X');
+    }
+
+    String dajPierwszeSlowoKtoreMaZnaczenie (String tekst) {
+        String regex = "[,\\.\\s]";
+        String myStr = tekst;
+        String[] myArray = myStr.split(regex);
+        for (int i = 0; i < myArray.length; i++) {
+            String slowa = myArray[i];
+            if (!slowaBezZnaczenia.contains(slowa.toUpperCase())) {
+                return slowa.toUpperCase();
+            }
+        }
+        return "".toUpperCase();
     }
 }
