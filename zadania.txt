@@ -37,3 +37,11 @@ In these cases, the following word corresponding to the name or surname will be 
 
 Example: 
 Juan Angel de las Lomas Garces -> LOGA
+
+Zad 7.
+Stworzyć walidator curpa. Now klasa z metodą, któ©a pobiera CURP w parametrze i zwraca prawdę lub fałsz w zalężności czy CURP jest poprawny.
+CURP uznajemy za poprawny jeśli:
+  * suma kontrolna jest poprawnie wyliczona
+  * 6 cyfr odpowiedzialnych za datę tworzy poprawną datę
+  * odpowiednie znaki są cyframi, literami lub spółgłoskami
+Dodatkowo należy stworzyć testy któ©e zweryfikują poprawność działania walidatora
