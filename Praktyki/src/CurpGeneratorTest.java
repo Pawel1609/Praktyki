@@ -289,4 +289,13 @@ class CurpGenerataorTest {
         assertEquals("JUAN", wynik27);
     }
 
+    @Test
+    void dataDzwineDniiMiesiace() {
+
+        CurpGenerator generator = new CurpGenerator();
+        String wynik28 = generator.sprawdzWiek(LocalDate.of(2004,1,11),(char) 0);
+
+        assertEquals("A", wynik28);
+    }
+
 }

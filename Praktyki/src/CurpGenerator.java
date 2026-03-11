@@ -1,4 +1,3 @@
-import java.sql.SQLData;
 import java.text.Normalizer;
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -76,6 +75,7 @@ public class CurpGenerator {
         EM,
         NE
     }
+
     Map<String, String> map = new HashMap<>();
     List<String> slowaBezZnaczenia = List.of("DA", "DAS", "DE", "DEL", "DER", "DI", "DIE", "DD", "Y", "L", "LA", "LOS", "LAS", "LE", "LES", "MAC", "MC", "VAN", "VON");
     String slownik = "0123456789ABCDEFGHIJKLMN&OPQRSTUVWXYZ";
@@ -88,30 +88,31 @@ public class CurpGenerator {
         char p3 = 0;
         char p4 = 0;
         char p5 = 0;
-        if (nazwisko.length()>0) {
+        if (nazwisko.length() > 0) {
             p1 = nazwisko.charAt(0);
         }
         for (int i = 1; i < nazwisko.length(); i++) {
             Character litera = nazwisko.charAt(i);
-            if (!spolgloski.contains(litera.toString())){
+            if (!spolgloski.contains(litera.toString())) {
                 p2 = nazwisko.charAt(i);
                 break;
             }
         }
-        if (drugieNazwisko.length()>0) {
+        if (drugieNazwisko.length() > 0) {
             p3 = drugieNazwisko.charAt(0);
         } else {
             p3 = 'X';
         }
-        if (imie.length()>0) {
+        if (imie.length() > 0) {
             p4 = imie.charAt(0);
         }
-        if (drugieimieZFormularza.length()>0) {
+        if (drugieimieZFormularza.length() > 0) {
             p5 = drugieimieZFormularza.charAt(0);
         }
 
         return ("" + p1 + p2 + p3 + p4).toUpperCase();
     }
+
     String wyliczCyfryZDatyUrodzin(LocalDate urodziny) {
         Integer rokPelny = urodziny.getYear(); // Pobiera pełne 2026
         Integer miesiacLiczba = urodziny.getMonthValue(); // JS liczy miesiące od 0, więc dodajemy 1
@@ -147,7 +148,7 @@ public class CurpGenerator {
         return "X".toUpperCase();
     }
 
-    String spolgloski(String nazwisko,String drugieNazwisko,String imie) {
+    String spolgloski(String nazwisko, String drugieNazwisko, String imie) {
         String pierwszaSpolgloskaNazwiska = znajdzSpolgloske(nazwisko);
         String pierwszaSpolgloskaDrugiegoNazwiska = znajdzSpolgloske(drugieNazwisko);
         String pierwszaSpolgloskaImienia = znajdzSpolgloske(imie);
@@ -155,7 +156,7 @@ public class CurpGenerator {
         return (pierwszaSpolgloskaNazwiska + pierwszaSpolgloskaDrugiegoNazwiska + pierwszaSpolgloskaImienia).toUpperCase();
     }
 
-    String sprawdzWiek (LocalDate data_urodzenia, char parametrSekwencji) {
+    String sprawdzWiek(LocalDate data_urodzenia, char parametrSekwencji) {
         int rokPelny = data_urodzenia.getYear();
         char p11;
         if (rokPelny >= 2000) {
@@ -166,11 +167,11 @@ public class CurpGenerator {
         return String.valueOf(p11).toUpperCase();
     }
 
-    String obliczanie18Cyfry(String kod17){
+    String obliczanie18Cyfry(String kod17) {
         int suma = 0;
 
         for (int i = 0; i < 17; i++) {
-            char c =  kod17.charAt(i);
+            char c = kod17.charAt(i);
             int wartosc = Character.getNumericValue(c);
             if (wartosc == -1) wartosc = 0;
             suma += wartosc * (18 - i);
@@ -178,23 +179,25 @@ public class CurpGenerator {
         int cyfraKontrolna = (10 - (suma % 10)) % 10;
         return String.valueOf(cyfraKontrolna);
     }
+
     private static String normalize(String input) {
         return input == null ? null : Normalizer.normalize(input, Normalizer.Form.NFKD);
     }
+
     static String removeAccents(String input) {
         return normalize(input).replaceAll("\\p{M}", "");
     }
 
-    String generujeCURP(String nazwisko, String drugieNazwisko, String imie, String drugieimieZFormularza, char plec, Stany miasto, LocalDate urodziny, char parametrSekwencji){
+    String generujeCURP(String nazwisko, String drugieNazwisko, String imie, String drugieimieZFormularza, char plec, Stany miasto, LocalDate urodziny, char parametrSekwencji) {
         String wyczysczoneNazwisko = wyczyscTekst(nazwisko);
         String wyczysczoneimie = wyczyscTekst(imie);
         String wyczysczoneDrugieNazwisko = wyczyscTekst(drugieNazwisko);
         String wyczysczoneDrugieImie = wyczyscTekst(drugieimieZFormularza);
         imie = powtarzajaceSieImiona(wyczysczoneimie, wyczysczoneDrugieImie);
-        String pierwsze = pierwszeLitery( wyczysczoneNazwisko, wyczysczoneDrugieNazwisko, wyczysczoneimie, wyczysczoneDrugieImie);
+        String pierwsze = pierwszeLitery(wyczysczoneNazwisko, wyczysczoneDrugieNazwisko, wyczysczoneimie, wyczysczoneDrugieImie);
         String dataUzytkownika = wyliczCyfryZDatyUrodzin(urodziny);
         String miastoUzytkownika = miasto.name();
-        String obliczanieSpolglosek = spolgloski( wyczysczoneNazwisko, wyczysczoneDrugieNazwisko, wyczysczoneimie);
+        String obliczanieSpolglosek = spolgloski(wyczysczoneNazwisko, wyczysczoneDrugieNazwisko, wyczysczoneimie);
         String liczba = sprawdzWiek(urodziny, parametrSekwencji);
         String suroweLitery = pierwsze;
         przygotujSlownikWulgaryzmow();
@@ -254,7 +257,7 @@ public class CurpGenerator {
         map.put("PEDA", "PEDX");
         map.put("PENE", "PENX");
         map.put("PUTO", "PUTX");
-        map.put("RATA","RATX");
+        map.put("RATA", "RATX");
     }
 
     String ocenzurujTresc(String suroweLitery) {
@@ -266,7 +269,7 @@ public class CurpGenerator {
         return suroweLitery;
     }
 
-    String powtarzajaceSieImiona (String imie, String drugieimieZFormularza) {
+    String powtarzajaceSieImiona(String imie, String drugieimieZFormularza) {
         if (imie.equals("Maria")) {
             imie = drugieimieZFormularza;
         }
@@ -279,19 +282,20 @@ public class CurpGenerator {
         return imie;
     }
 
-    String zmianaÑNaX(String cyfraKontrolna){
+    String zmianaÑNaX(String cyfraKontrolna) {
         return cyfraKontrolna.replace('Ñ', 'X');
     }
-    String zmianaZnakowNaX(String zmiana){
+
+    String zmianaZnakowNaX(String zmiana) {
         return zmiana.replace('/', 'X')
-                     .replace('-', 'X')
-                     .replace('.', 'X')
-                     .replace('‘', 'X')
-                     .replace('¨', 'X')
-                     .replace('`', 'X');
+                .replace('-', 'X')
+                .replace('.', 'X')
+                .replace('‘', 'X')
+                .replace('¨', 'X')
+                .replace('`', 'X');
     }
 
-    String dajPierwszeSlowoKtoreMaZnaczenie (String tekst) {
+    String dajPierwszeSlowoKtoreMaZnaczenie(String tekst) {
         String regex = "[,\\.\\s]";
         String myStr = tekst;
         String[] myArray = myStr.split(regex);
@@ -303,4 +307,5 @@ public class CurpGenerator {
         }
         return "".toUpperCase();
     }
+
 }
