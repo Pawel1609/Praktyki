@@ -1,3 +1,5 @@
+package com.example.curpspring;
+
 import java.text.Normalizer;
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -6,40 +8,7 @@ import java.util.Map;
 
 
 public class CurpGenerator {
-    /* enum stany = (
-            "Aguascalientes": "AG",
-             "Baja California Norte": "BC",
-             "Baja California Sur": "BS",
-             "Chihuahua": "CH",
-             "Colima": "CL",
-             "Campeche": "CM",
-             "Coahuila": "CO",
-             "Chiapas": "CS",
-             "Distrito Federal": "DF",
-             "Durango": "DG",
-             "Guerrero": "GR",
-             "Guanajuato": "GT",
-             "Hidalgo": "HG",
-             "Jalisco": "JA",
-             "Michoacan": "MI",
-             "Morelos": "MO",
-             "Nayarit": "NA",
-             "Nuevo Leon": "NL",
-             "Oaxaca": "OA",
-             "Puebla": "PU",
-             "Quintana Roo": "QR",
-             "Queretaro": "QT",
-             "Sinaloa": "SI",
-             "San Luis Potosi": "SL",
-             "Sonora": "SO",
-             "Tabasco": "TB",
-             "Tlaxcala": "TL",
-             "Tamaulipas": "TM",
-             "Veracruz": "VE",
-             "Yucatan": "YU",
-             "Zacatecas": "ZA",
-             "México": "EM",
-             "NE": "NE" ); */
+
     enum Stany {
         AG,
         BC,

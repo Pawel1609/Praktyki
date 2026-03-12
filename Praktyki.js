@@ -65,9 +65,9 @@
     }
 
     function spolgloski(nazwisko, drugieNazwisko, imie) {
-        const pierwszaSpolgloskaNazwiska = znajdzSpolgloski(nazwisko);
-        const pierwszaSpolgloskaDrugiegoNazwiska = znajdzSpolgloski(drugieNazwisko);
-        const pierwszaSpolgloskaImienia = znajdzSpolgloski(imie);
+        const pierwszaSpolgloskaNazwiska = znajdzSpolgloske(nazwisko);
+        const pierwszaSpolgloskaDrugiegoNazwiska = znajdzSpolgloske(drugieNazwisko);
+        const pierwszaSpolgloskaImienia = znajdzSpolgloske(imie);
     
         return pierwszaSpolgloskaNazwiska + pierwszaSpolgloskaDrugiegoNazwiska + pierwszaSpolgloskaImienia;
     }
