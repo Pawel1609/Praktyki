@@ -12,7 +12,7 @@
     let drugieNazwisko = document.getElementById("drugie_nazwisko").value;
     let miasto = document.getElementById("miasto").value;
     let data = document.getElementById("urodziny").value;
-
+    let plec;
     if (document.getElementById("plec_M").checked) {
             plec = "H"; // Hombre (Mężczyzna)
         } else if (document.getElementById("plec_K").checked){
@@ -21,10 +21,11 @@
             plec = "X"; // Non-binary
         }
     let finalnyKod = generujeCURP(nazwisko, drugieNazwisko, imie, drugieimie, plec, miasto, data);
+    document.getElementById("wynik").value = finalnyKod;
 
-    let komunikat = przygotujKomunikat(imie, drugieimie, nazwisko, drugieNazwisko, miasto, data, plec, finalnyKod);
-document.getElementById("wynik").innerHTML = komunikat;
+    fetchData(nazwisko, drugieNazwisko, imie, drugieimie, plec, miasto, data);
 }
+    
 </script>
 </head>
 <body>
@@ -86,7 +87,11 @@ document.getElementById("wynik").innerHTML = komunikat;
     <input type="reset">
   </fieldset>
 </br>
-    <button type="button" onclick="napiszDanenastronie()">Generuj</button>
-    <p><strong id="wynik">---</strong></p>
+    <button type="button" onclick="napiszDanenastronie()">Generuj CURP</button>
+    <br></br>
+    <div>
+        <label for="curp_wynik"><strong>Twój kod CURP:</strong></label><br>
+        <input type="text" id="wynik" value="" readonly>
+    </div>
 </body>
 </html>

@@ -114,6 +114,10 @@
     }
 
     function pierwszeLitery(nazwisko, drugieNazwisko, imie, drugieimieZFormularza) {
+        let p1;
+        let p2;
+        let p3;
+        let p4;
         if (nazwisko[0]) {
             p1 = nazwisko[0];
         } else {
@@ -137,7 +141,6 @@
     return (p1 + p2 + p3 + p4).toUpperCase();
     }
 
-
     function generujeCURP(nazwisko, drugieNazwisko, imie, drugieimieZFormularza, plec, miasto, urodziny) {
         const pierwsze = pierwszeLitery(nazwisko, drugieNazwisko, imie, drugieimieZFormularza);
         const dataUzytkownika = wyliczCyfryZDatyUrodzin(urodziny);
@@ -147,4 +150,29 @@
         const kod17 = (pierwsze + dataUzytkownika + plec + miastoUzytkownika + obliczanieSpolglosek + liczba).toUpperCase();
         const cyfraKontrolna = obliczanie18Cyfry(kod17);
         return kod17 + cyfraKontrolna;
+    }
+
+    async function fetchData(nazwisko, drugieNazwisko, imie, drugieimieZFormularza, plec, miasto, urodziny) {
+    const urlStrony = "http://localhost:8080/curp/test2";
+    try {
+        const stanUzytkownika = stany[miasto];
+        const url = urlStrony + "?nazwisko=" + nazwisko + 
+                    "&drugieNazwisko=" + drugieNazwisko + 
+                    "&imie=" + imie + 
+                    "&drugieimieZFormularza=" + drugieimieZFormularza + 
+                    "&dataUrodzenia=" + urodziny + 
+                    "&plec=" + plec + 
+                    "&stan=" + stanUzytkownika;
+        console.log(url);
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+            }
+
+            const result = await response.text();
+            console.log(result);
+            document.getElementById("wynik").value = result;
+        } catch (error) {
+            console.error(error.message);
+        }
     }

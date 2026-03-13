@@ -10,6 +10,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/curp")
+@CrossOrigin(origins = "*") // To pozwala każdemu (nawet plikom z dysku) na dostęp
 public class CurpControler {
 
     CurpGenerator generator = new CurpGenerator();
@@ -26,14 +27,7 @@ public class CurpControler {
 
         String wynik =generator.generujeCURP(nazwisko, drugieNazwisko, imie, drugieimieZFormularza, plec, stan, dataUrodzenia, (char) 0);
 
-        return "WYNIK: " + wynik + "</br>" +
-                "</br>" + "Nazwisko: "+ nazwisko +
-                "</br>" + "Drugie nazwisko: " + drugieNazwisko +
-                "</br>" + "Imie: " + imie +
-                "</br>" + "Drugie imie: " + drugieimieZFormularza +
-                "</br>" + "Data urodzenia: " + dataUrodzenia +
-                "</br>" + "Płeć: " + plec +
-                "</br>" + "Stan: " + stan;
+        return wynik;
     }
 
 
