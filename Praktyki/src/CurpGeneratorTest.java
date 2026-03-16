@@ -298,4 +298,15 @@ class CurpGenerataorTest {
         assertEquals("A", wynik28);
     }
 
+    @Test
+    void CurpRequest(){
+        CurpRequest curpRequest = new CurpRequest();
+        curpRequest.setNazwisko("Kowalski");
+        curpRequest.setDrugieNazwisko("Komar");
+        curpRequest.setImie("Pawel");
+        curpRequest.setDrugieimieZFormularza("Jacek");
+        curpRequest.setDataUrodzenia(LocalDate.of(2004,9,16));
+        curpRequest.setPlec('H');
+        }
+
 }

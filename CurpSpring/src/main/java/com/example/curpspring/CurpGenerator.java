@@ -263,6 +263,9 @@ public class CurpGenerator {
     String dajPierwszeSlowoKtoreMaZnaczenie(String tekst) {
         String regex = "[,\\.\\s]";
         String myStr = tekst;
+        if (myStr == null) {
+            return "X";
+        }
         String[] myArray = myStr.split(regex);
         for (int i = 0; i < myArray.length; i++) {
             String slowa = myArray[i];

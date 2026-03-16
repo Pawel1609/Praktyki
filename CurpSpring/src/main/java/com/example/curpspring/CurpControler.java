@@ -16,7 +16,7 @@ public class CurpControler {
     CurpGenerator generator = new CurpGenerator();
 
     @GetMapping("/test")
-    String test(){
+    String test() {
         return "hello";
     }
 
@@ -25,15 +25,21 @@ public class CurpControler {
                  @RequestParam String drugieimieZFormularza, @RequestParam @DateTimeFormat(pattern = "ddMMyyyy") LocalDate dataUrodzenia,
                  @RequestParam char plec, @RequestParam CurpGenerator.Stany stan) {
 
-        String wynik =generator.generujeCURP(nazwisko, drugieNazwisko, imie, drugieimieZFormularza, plec, stan, dataUrodzenia, (char) 0);
+        String wynik = generator.generujeCURP(nazwisko, drugieNazwisko, imie, drugieimieZFormularza, plec, stan, dataUrodzenia, (char) 0);
 
         return wynik;
     }
 
 
     @GetMapping("/test3/{nazwisko}/{imie}/")
-    String test3(@PathVariable String nazwisko, @PathVariable String imie){
-        return "Nazwisko: "+ nazwisko +
+    String test3(@PathVariable String nazwisko, @PathVariable String imie) {
+        return "Nazwisko: " + nazwisko +
                 "</br>" + "Imie: " + imie;
+    }
+
+    @GetMapping("/test4")
+    String test4(@RequestParam CurpRequest request) {
+        String wynik = generator.generujeCURP(request.getNazwisko(), request.getDrugieNazwisko(), request.getImie(), request.getDrugieimieZFormularza(), request.getPlec(), request.getStan(), request.getDataUrodzenia(), (char) 0);
+        return wynik;
     }
 }
