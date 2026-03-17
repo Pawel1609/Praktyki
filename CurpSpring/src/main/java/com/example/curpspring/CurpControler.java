@@ -37,8 +37,8 @@ public class CurpControler {
                 "</br>" + "Imie: " + imie;
     }
 
-    @GetMapping("/test4")
-    String test4(@RequestParam CurpRequest request) {
+    @PostMapping("/test4")
+    String test4(@RequestBody CurpRequest request) {
         String wynik = generator.generujeCURP(request.getNazwisko(), request.getDrugieNazwisko(), request.getImie(), request.getDrugieimieZFormularza(), request.getPlec(), request.getStan(), request.getDataUrodzenia(), (char) 0);
         return wynik;
     }

@@ -52,11 +52,11 @@ public class CurpGenerator {
     String spolgloski = "BCDFGHJKLMNPRSTWZbcdfghjklmnprstwz";
 
     String pierwszeLitery(String nazwisko, String drugieNazwisko, String imie, String drugieimieZFormularza) {
-        char p1 = 0;
-        char p2 = 0;
-        char p3 = 0;
-        char p4 = 0;
-        char p5 = 0;
+        char p1 = 'X';
+        char p2 = 'X';
+        char p3 = 'X';
+        char p4 = 'X';
+
         if (nazwisko.length() > 0) {
             p1 = nazwisko.charAt(0);
         }
@@ -69,14 +69,9 @@ public class CurpGenerator {
         }
         if (drugieNazwisko.length() > 0) {
             p3 = drugieNazwisko.charAt(0);
-        } else {
-            p3 = 'X';
         }
         if (imie.length() > 0) {
             p4 = imie.charAt(0);
-        }
-        if (drugieimieZFormularza.length() > 0) {
-            p5 = drugieimieZFormularza.charAt(0);
         }
 
         return ("" + p1 + p2 + p3 + p4).toUpperCase();
@@ -261,11 +256,13 @@ public class CurpGenerator {
     }
 
     String dajPierwszeSlowoKtoreMaZnaczenie(String tekst) {
-        String regex = "[,\\.\\s]";
-        String myStr = tekst;
-        if (myStr == null) {
+        if (tekst == null) {
             return "X";
         }
+
+        String regex = "[,\\.\\s]";
+        String myStr = tekst;
+
         String[] myArray = myStr.split(regex);
         for (int i = 0; i < myArray.length; i++) {
             String slowa = myArray[i];

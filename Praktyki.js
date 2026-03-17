@@ -35,7 +35,7 @@
         "México": "EM",
         "NE": "NE"
     };
-
+/*
     const slownik = "0123456789ABCDEFGHIJKLMN&OPQRSTUVWXYZ";
 
     const samogloski = "AEIOUY";
@@ -176,3 +176,38 @@
             console.error(error.message);
         }
     }
+*/
+        async function fetchDataPost(nazwisko, drugieNazwisko, imie, drugieimieZFormularza, plec, miasto, urodziny) {
+        const urlStrony = "http://localhost:8080/curp/test4";
+        try {
+            const stanUzytkownika = stany[miasto];
+            let request = {};
+            request.nazwisko = nazwisko;
+            request.drugieNazwisko = drugieNazwisko;
+            request.imie = imie;
+            request.drugieimieZFormularza = drugieimieZFormularza;
+            request.dataUrodzenia = urodziny;
+            request.plec = plec;
+            request.stan = stanUzytkownika;
+
+            const response = await fetch("http://localhost:8080/curp/test4", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(request),});
+
+            console.log(urlStrony);
+
+            if (!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+                }
+
+                const result = await response.text();
+                console.log(result);
+                document.getElementById("wynik").value = result;
+            } catch (error) {
+                console.error(error.message);
+        }
+    }
+
