@@ -1,5 +1,7 @@
 package com.example.curpspring;
 
+import com.example.curpspring.model.Osoba;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
@@ -13,7 +15,10 @@ import java.util.*;
 @CrossOrigin(origins = "*") // To pozwala każdemu (nawet plikom z dysku) na dostęp
 public class CurpControler {
 
-    CurpGenerator generator = new CurpGenerator();
+    @Autowired
+    CurpGenerator generator;
+    @Autowired
+    CurpService service;
 
     @GetMapping("/test")
     String test() {
@@ -41,5 +46,17 @@ public class CurpControler {
     String test4(@RequestBody CurpRequest request) {
         String wynik = generator.generujeCURP(request.getNazwisko(), request.getDrugieNazwisko(), request.getImie(), request.getDrugieimieZFormularza(), request.getPlec(), request.getStan(), request.getDataUrodzenia(), (char) 0);
         return wynik;
+    }
+    @GetMapping("/test5")
+    String test5(@RequestParam String curp) {
+        Osoba wynik = service.findOsobaBycurp(curp);
+        String tresc=  "</br>" + "Nazwisko: " + wynik.getNazwisko() +
+                       "</br>" + "Drugie Nazwisko: " + wynik.getDrugieNazwisko() +
+                       "</br>" + "Imie: " + wynik.getImie() +
+                       "</br>" + "Drugie Imie: " + wynik.getDrugieImieZFormularza() +
+                       "</br>" + "Płeć: " + wynik.getPlec() +
+                       "</br>" + "Stan: " + wynik.getStan() +
+                       "</br>" + "Data urodzenia: " + wynik.getDataUrodzenia();
+        return tresc;
     }
 }

@@ -1,5 +1,10 @@
 package com.example.curpspring;
 
+import com.example.curpspring.model.Osoba;
+import com.example.curpspring.model.OsobaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.text.Normalizer;
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -7,9 +12,13 @@ import java.util.List;
 import java.util.Map;
 
 
+@Component
 public class CurpGenerator {
 
-    enum Stany {
+    @Autowired
+    OsobaRepository osobaRepository;
+
+    public enum Stany {
         AG,
         BC,
         BS,
@@ -164,8 +173,18 @@ public class CurpGenerator {
         String literyPoCenzurze = ocenzurujTresc(suroweLitery);
         String kod17 = (literyPoCenzurze + dataUzytkownika + plec + miastoUzytkownika + obliczanieSpolglosek + liczba).toUpperCase();
         String cyfraKontrolna = obliczanie18Cyfry(kod17);
-
-        return kod17 + cyfraKontrolna;
+        String kodCurp = kod17 + cyfraKontrolna;
+        Osoba nowaOsoba = new Osoba();
+            nowaOsoba.setNazwisko(nazwisko);
+            nowaOsoba.setDrugieNazwisko(drugieNazwisko);
+            nowaOsoba.setImie(imie);
+            nowaOsoba.setDrugieImieZFormularza(drugieimieZFormularza);
+            nowaOsoba.setDataUrodzenia(urodziny);
+            nowaOsoba.setPlec(plec);
+            nowaOsoba.setStan(miasto);
+            nowaOsoba.setWynik(kodCurp);
+            osobaRepository.save(nowaOsoba);
+        return kodCurp;
     }
 
     private String wyczyscTekst(String nazwisko) {
@@ -267,10 +286,10 @@ public class CurpGenerator {
         for (int i = 0; i < myArray.length; i++) {
             String slowa = myArray[i];
             if (!slowaBezZnaczenia.contains(slowa.toUpperCase())) {
-                return slowa.toUpperCase();
+                return slowa;
             }
         }
-        return "".toUpperCase();
+        return "";
     }
 
 }

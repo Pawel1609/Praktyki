@@ -1,16 +1,24 @@
 package com.example.curpspring;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
+@ExtendWith(SpringExtension.class)
 class CurpContsrolerTest {
+
+    @Autowired
+    CurpControler curpControler;
 
     @Test
     void curpControler() {
-        CurpControler curpControler = new CurpControler();
         CurpRequest curpRequest = new CurpRequest();
 
         curpRequest.setNazwisko("Kowalski");
@@ -28,7 +36,6 @@ class CurpContsrolerTest {
 
     @Test
     void testBezDrugiegoNazwiska(){
-        CurpControler curpControler = new CurpControler();
         CurpRequest curpRequest = new CurpRequest();
 
         curpRequest.setNazwisko("Kowalski");
@@ -46,7 +53,6 @@ class CurpContsrolerTest {
 
     @Test
     void testBezDrugiegoImienia(){
-        CurpControler curpControler = new CurpControler();
         CurpRequest curpRequest = new CurpRequest();
 
         curpRequest.setNazwisko("Kowalski");
