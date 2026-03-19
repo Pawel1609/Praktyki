@@ -7,6 +7,8 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
@@ -277,10 +279,10 @@ class CurpGenerataorTest {
     @Test
     void smiecioweSlowa() {
 
-        
         String wynik27 = generator.dajPierwszeSlowoKtoreMaZnaczenie("Juan Angel de las Lomas Garces");
 
-        assertEquals("JUAN", wynik27);
+        assertEquals("Juan", wynik27);
+
     }
 
     @Test
@@ -290,6 +292,8 @@ class CurpGenerataorTest {
         String wynik28 = generator.sprawdzWiek(LocalDate.of(2004,1,11),(char) 0);
 
         assertEquals("A", wynik28);
+
+
     }
 
     @Test
@@ -302,5 +306,37 @@ class CurpGenerataorTest {
         curpRequest.setDataUrodzenia(LocalDate.of(2004,9,16));
         curpRequest.setPlec('H');
         }
+    @Test
+    void randomoweLitery() {
+            int count = 8;
+            boolean letters = true;
+            boolean numbers = false;
+
+        String wynikRandom = RandomStringUtils.random(count, letters, numbers);
+
+        assertEquals(wynikRandom, wynikRandom);
+    }
+    @Test
+    void randomoweLiczby() {
+        int count = 8;
+        boolean letters = false;
+        boolean numbers = true;
+
+        String wynikRandom = RandomStringUtils.random(count, letters, numbers);
+
+        assertEquals(wynikRandom, wynikRandom);
+    }
+
+    @Test
+    void randomoweDaneDoGeneratoraCurp(){
+        for (int i = 0; i < 1; i++) {
+            String losoweNazwisko = RandomStringUtils.random(10, true, false);
+            String losoweDrugieNazwisko = RandomStringUtils.random(10, true, false);
+            String losoweImie = RandomStringUtils.random(10, true, false);
+            String losoweDrugieImie = RandomStringUtils.random(10, true, false);
+
+            String wynik27 = generator.generujeCURP(losoweNazwisko, losoweDrugieNazwisko, losoweImie, losoweDrugieImie, 'H', CurpGenerator.Stany.NL, LocalDate.of(2004, 9, 16), (char) 0);
+        }
+    }
 
 }

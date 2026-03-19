@@ -59,4 +59,22 @@ public class CurpControler {
                        "</br>" + "Data urodzenia: " + wynik.getDataUrodzenia();
         return tresc;
     }
+    @GetMapping("/test6")
+    String test6(@RequestParam String curp) {
+        List<Osoba> wynik = service.findOsobyBycurp(curp);
+        String tresc = "";
+        for ( Osoba dane : wynik) {
+                tresc += "</br>" + "Nazwisko: " + dane.getNazwisko() +
+                        "</br>" + "Drugie Nazwisko: " + dane.getDrugieNazwisko() +
+                        "</br>" + "Imie: " + dane.getImie() +
+                        "</br>" + "Drugie Imie: " + dane.getDrugieImieZFormularza() +
+                        "</br>" + "Płeć: " + dane.getPlec() +
+                        "</br>" + "Stan: " + dane.getStan() +
+                        "</br>" + "Data urodzenia: " + dane.getDataUrodzenia() +
+                        "</br>" + " " +
+                        "</br>" + " ";
+            }
+            return tresc;
+    }
+
 }
