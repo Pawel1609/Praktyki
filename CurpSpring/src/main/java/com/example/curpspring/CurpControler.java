@@ -77,4 +77,40 @@ public class CurpControler {
             return tresc;
     }
 
+    @GetMapping("/test7")
+    String test7(@RequestParam String imie,@RequestParam String nazwisko) {
+        List<Osoba> wynik = service.findOsobyByImieAndNazwisko(imie, nazwisko);
+        String tresc = "";
+        for (Osoba dane : wynik) {
+            tresc += "</br>" + "Nazwisko: " + dane.getNazwisko() +
+                    "</br>" + "Drugie Nazwisko: " + dane.getDrugieNazwisko() +
+                    "</br>" + "Imie: " + dane.getImie() +
+                    "</br>" + "Drugie Imie: " + dane.getDrugieImieZFormularza() +
+                    "</br>" + "Płeć: " + dane.getPlec() +
+                    "</br>" + "Stan: " + dane.getStan() +
+                    "</br>" + "Data urodzenia: " + dane.getDataUrodzenia() +
+                    "</br>" + " " +
+                    "</br>" + " ";
+        }
+        return tresc;
+        }
+
+    @GetMapping("/test8")
+    String test8(@RequestParam String curp, @RequestParam String noweImie, @RequestParam String noweNazwisko) {
+        List<Osoba> osoba = service.zaktualizujRekord(curp, noweImie, noweNazwisko);
+        /*for ( Osoba dane : osoba) {
+            String nowyCurp = service.generujIZapiszCurp(
+                    noweNazwisko,
+                    dane.getDrugieNazwisko(),
+                    noweImie,
+                    dane.getDrugieImieZFormularza(),
+                    dane.getDataUrodzenia(),
+                    dane.getPlec(),
+                    dane.getStan(),
+                    dane.getWynik()
+            );
+            return nowyCurp;
+        }*/
+        return "";
+    }
 }

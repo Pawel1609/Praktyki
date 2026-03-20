@@ -69,4 +69,12 @@ class CurpContsrolerTest {
         assertEquals("KOKP040916HNEWMWA7", wynik);
     }
 
+    @Test
+    void szukanieDanychPoprzezImieAndNazwisko(){
+        String imie = "Michał";
+        String nazwisko = "Kowalski";
+        String wynik = curpControler.test7(imie, nazwisko);
+        //assertEquals(wynik, wynik);
+    }
+
 }

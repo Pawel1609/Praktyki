@@ -20,6 +20,8 @@ class CurpGenerataorTest {
     
     @Autowired
     CurpGenerator generator;
+    @Autowired
+    CurpService service;
 
     @Test
     void pierwszeLitery() {
@@ -148,10 +150,19 @@ class CurpGenerataorTest {
 
     @Test
     void testGenerujeCurp() {
-        
-        String wynik14 = generator.generujeCURP("AAA", "WWW", "JOÑ", "FOLUÑ", 'H', CurpGenerator.Stany.OA, LocalDate.of(2009,9,16), (char) 0);
+        String nazwisko = "AAA";
+        String drugieNazwisko = "WWW";
+        String imie = "JOÑ";
+        String drugieimieZFormularza = "FOLUÑ";
+        LocalDate data = LocalDate.of(2009, 9, 16);
+        char plec = 'H';
+        CurpGenerator.Stany stan = CurpGenerator.Stany.OA;
 
-                assertEquals("AAWJ090916HOAXWXA7", wynik14);
+        String kod = generator.generujeCURP(nazwisko, drugieNazwisko, imie, drugieimieZFormularza, plec, stan, data, (char) 0);
+
+        String wynik14 = service.generujIZapiszCurp(nazwisko, drugieNazwisko, imie, drugieimieZFormularza, data, plec, stan, kod);
+
+        assertEquals("AAWJ090916HOAXWXA7", wynik14);
     }
 
     @Test
@@ -306,6 +317,7 @@ class CurpGenerataorTest {
         curpRequest.setDataUrodzenia(LocalDate.of(2004,9,16));
         curpRequest.setPlec('H');
         }
+
     @Test
     void randomoweLitery() {
             int count = 8;
@@ -316,6 +328,7 @@ class CurpGenerataorTest {
 
         assertEquals(wynikRandom, wynikRandom);
     }
+
     @Test
     void randomoweLiczby() {
         int count = 8;
@@ -335,7 +348,8 @@ class CurpGenerataorTest {
             String losoweImie = RandomStringUtils.random(10, true, false);
             String losoweDrugieImie = RandomStringUtils.random(10, true, false);
 
-            String wynik27 = generator.generujeCURP(losoweNazwisko, losoweDrugieNazwisko, losoweImie, losoweDrugieImie, 'H', CurpGenerator.Stany.NL, LocalDate.of(2004, 9, 16), (char) 0);
+            String kod = generator.generujeCURP(losoweNazwisko, losoweDrugieNazwisko, losoweImie, losoweDrugieImie, 'H', CurpGenerator.Stany.NL, LocalDate.of(2004, 9, 16), (char) 0);
+            String wynik14 = service.generujIZapiszCurp(losoweNazwisko, losoweDrugieNazwisko, losoweImie, losoweDrugieImie, LocalDate.of(2004, 9, 16), 'H', CurpGenerator.Stany.NL, kod);
         }
     }
 

@@ -174,7 +174,7 @@ public class CurpGenerator {
         String kod17 = (literyPoCenzurze + dataUzytkownika + plec + miastoUzytkownika + obliczanieSpolglosek + liczba).toUpperCase();
         String cyfraKontrolna = obliczanie18Cyfry(kod17);
         String kodCurp = kod17 + cyfraKontrolna;
-        Osoba nowaOsoba = new Osoba();
+        /*Osoba nowaOsoba = new Osoba();
             nowaOsoba.setNazwisko(nazwisko);
             nowaOsoba.setDrugieNazwisko(drugieNazwisko);
             nowaOsoba.setImie(imie);
@@ -183,7 +183,7 @@ public class CurpGenerator {
             nowaOsoba.setPlec(plec);
             nowaOsoba.setStan(miasto);
             nowaOsoba.setWynik(kodCurp);
-            osobaRepository.save(nowaOsoba);
+            osobaRepository.save(nowaOsoba);*/
         return kodCurp;
     }
 
